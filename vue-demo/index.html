@@ -8,21 +8,52 @@
 </head>
 
 <body>
-    <div id="example-1">
+    <div id="example-1" v-on:click='do'>
         Hello {{ name }} and {{age}}!
+    </div>
+    <!--     <div id="example-2" @mouseout="do">
+        Hello {{ name }} and {{age}}!
+    </div> -->
+    <div id="example-2" @click="do">
+        Hello {{ name }} and {{age}}!
+    </div>
+    <input id="example-3" @keyup.enter="do">
     </div>
     <script>
     // 这是我们的 Model
     var exampleData = {
         name: 'Vue.js',
-        age:'18'
+        age: '18'
     }
 
     // 创建一个 Vue 实例或 "ViewModel"
     // 它连接 View 与 Model
     var exampleVM = new Vue({
         el: '#example-1',
-        data: exampleData
+        data: exampleData,
+        methods: {
+            do: (event) => {
+                alert(event.target.tagName);
+            }
+        }
+    })
+    var exampleVM2 = new Vue({
+        el: '#example-2',
+        data: exampleData,
+        methods: {
+            do: (event) => {
+                alert(event.target.tagName + '!');
+            }
+        }
+    })
+    var exampleVM3 = new Vue({
+        el: '#example-3',
+        data: exampleData,
+        methods: {
+            do: (event) => {
+                alert(event.target.tagName + '!');
+            }
+        }
     })
     </script>
 </body>
