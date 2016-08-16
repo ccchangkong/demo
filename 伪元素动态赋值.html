@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>demo</title>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<style>
+			#a1 {
+				width: 200px;
+				height: 200px;
+				background-color: #333;
+				color: #fff;
+				position: relative;
+				margin-top: 50px;
+			}
+			
+			#a1:after {
+				content: attr(data-num);
+				line-height: 50px;
+				text-align: center;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				background-color: red;
+				position: absolute;
+				top: -20px;
+				right: -20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div data-num='22' id="a1">33333</div>
+		<script>
+			$(function() {
+
+				$('#a1').click(function() {
+					var n = $("#a1").attr('data-num');
+					$("#a1").attr('data-num', ++n);
+				});
+				//				$('#a1').click(function() {
+				//					console.log($("#a1").data('num'));
+				//					$("#a1").data('num', '3333');
+				//					console.log($("#a1").data('num'));
+				//				});
+			})
+		</script>
+	</body>
+
+</html>
