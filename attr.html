@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<style>
+			.a1 {
+				width: 200px;
+				height: 200px;
+				background-color: #333;
+				color: #fff;
+				position: relative;
+				margin-top: 50px;
+			}
+			
+			.num:after {
+				content: attr(data-num);
+				line-height: 50px;
+				text-align: center;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				background-color: red;
+				position: absolute;
+				top: -20px;
+				right: -20px;
+			}
+			ul{
+				height: 200px;
+				background-color: yellow;
+				overflow: hidden;
+			}
+			.a{
+				height:50px;
+				background-color: #AAB8C2;
+			}
+			.b{
+				background-color: #CC8EF5;
+				
+			}
+			.c{
+				height:500px;
+				background-color:#FF0000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div data-num='1' class="a1">33333</div>
+		<div data-num='' class="a1">33333</div>
+		<ul>
+			<li class="a"></li>
+			<li class="b"></li>
+			<li class="c"></li>
+		
+		</ul>
+		<script>
+			$(function() {
+				$(".a1").each(function() {
+					if($(this).attr('data-num') != '') {
+						$(this).addClass('num');
+					}
+				});
+				$('.a1').click(function() {
+					var n = $(this).attr('data-num');
+					$(this).addClass('num').attr('data-num', ++n);
+				});
+
+			});
+			//  var num = 0;
+			//  var max = 10;
+			//  var intervalId = null;
+			//
+			//  function incrementNumber() {
+			//      num++;
+			//      console.log(num);
+			//      if (num == max) {
+			//          clearInterval(intervalId);
+			//          
+			//      }
+			//  }
+			//  intervalId = setInterval(incrementNumber, 500); //.5s执行一次
+
+			//			var num = 0;
+			//			var max = 10;
+			//			var intervalId = null;
+			//
+			//			var intervalId = setInterval(function() {
+			//				num++;
+			//				console.log(num);
+			//				if(num == max) {
+			//					clearInterval(intervalId);
+			//
+			//				}
+			//			}, 500);
+			function getBaseLog(x, y) {
+				return Math.round(x*(Math.log(x * 2) / Math.log(y || 1.7)));
+			};
+			var a = 2;
+			console.log(getBaseLog(a));
+		</script>
+	</body>
+
+</html>
