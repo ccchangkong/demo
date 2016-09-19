@@ -1,14 +1,11 @@
-var Webpack = require("webpack");
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin'); //简化操作HTMl的插件
-// var ExtractTextPlugin = require('extract-text-webpack-plugin'); //用来关联外部文件
+
 module.exports = {
-    entry: './src/js/entry.js',
+    entry: { app: ['./src/entry.js'] },
     output: {
         path: path.join(__dirname, './dist'),
-        // publicPath: '', //打包后的url前缀
-        // filename: 'bundle.js'
-        filename: 'bundle.[chunkhash].js'
+        filename: 'bundle.js'
 
     },
     resolve: {
@@ -20,18 +17,16 @@ module.exports = {
     },
     module: {
         loaders: [
+                // 解析.vue文件
+                { test: /\.vue$/, loader: 'vue' },
                 { test: /\.js$/, loader: "babel", query: { presets: ['es2015'] } },
                 { test: /\.css$/, loader: "style!css" },
-                //'style-loader!css-loader',省略了-loader
-                // loader: ExtractTextPlugin.extract('style', ['css'])
-                { test: /\.(jpg|png)$/, loader: "url?limit=8192" },
-                { test: /\.scss$/, loader: "style!css!sass" }
+                { test: /\.scss$/, loader: "style!css!sass" },
+                { test: /\.(jpg|png)$/, loader: "url?limit=8192" }
                 // loader: ExtractTextPlugin.extract('style', ['css', 'sass'])
             ] //loader的编译顺序为从后往前
     },
     plugins: [ //这里变中括号了！
-        // new ExtractTextPlugin('[name].[chunkhash].css'),
-        new Webpack.BannerPlugin("author:cc"),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './src/tpl/index.html',

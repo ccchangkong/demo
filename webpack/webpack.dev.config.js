@@ -17,7 +17,7 @@ module.exports = {
     },
     module: {
         loaders: [
-                { test: /\.js$/, loader: "babel" },
+                { test: /\.js$/, loader: "babel" , query: {presets: ['es2015']}},
                 { test: /\.css$/, loader: "style!css" },
                 { test: /\.scss$/, loader: "style!css!sass" }
                 // loader: ExtractTextPlugin.extract('style', ['css', 'sass'])
