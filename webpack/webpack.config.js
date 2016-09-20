@@ -20,7 +20,7 @@ module.exports = {
     },
     module: {
         loaders: [
-                { test: /\.js$/, loader: "babel", query: { presets: ['es2015'] } },
+                { test: /\.js$/, loader: "babel", exclude: /node_modules/, query: { presets: ['es2015'], plugins: ['transform-runtime'] } },
                 { test: /\.css$/, loader: "style!css" },
                 //'style-loader!css-loader',省略了-loader
                 // loader: ExtractTextPlugin.extract('style', ['css'])
@@ -32,6 +32,11 @@ module.exports = {
     plugins: [ //这里变中括号了！
         // new ExtractTextPlugin('[name].[chunkhash].css'),
         new Webpack.BannerPlugin("author:cc"),
+        new Webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './src/tpl/index.html',

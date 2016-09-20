@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack-dev-server --inline --config webpack.dev.config.js",
+    "build": "webpack --progress --hide-modules --config webpack.prod.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -23,8 +24,10 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "vue": "^1.0.26",
+    "vue-hot-reload-api": "^2.0.6",
     "vue-html-loader": "^1.2.3",
     "vue-loader": "^8.5.2",
+    "vue-router": "^0.7.13",
     "vue-style-loader": "^1.0.0",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.1"
