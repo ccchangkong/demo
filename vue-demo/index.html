@@ -9,9 +9,9 @@
 
 <body>
     <div id="app">
-        <select v-model="selected">
-            <option v-for="option in options" v-bind:value="option.value">
-                {{ option.text }}
+        <select v-model="selected" multiple="">
+            <option v-for="option in options"  :value="option.value">
+                {{ option.text | json }}
             </option>
         </select>
         <span>Selected: {{ selected }}</span>
