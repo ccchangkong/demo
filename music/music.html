@@ -11,13 +11,11 @@
   <audio src="http://ws.stream.qqmusic.qq.com/628370.m4a?fromtag=46" controls></audio>
   <script>
   $(function() {
-    $.ajax({
-      url: "http://s.music.qq.com/fcgi-bin/music_search_new_platform?t=0&n=%s&aggr=1&cr=1&loginUin=0&format=json&inCharset=GB2312&outCharset=utf-8&notice=0&platform=jqminiframe.json&needNewCode=0&p=1&catZhida=0&remoteplace=sizer.newclient.next_song&w=王菲",
-      type: 'GET',
-      dataType: 'JSONP',
-      success: function(data) {
-        console.log(JSON.stringify(data))
-      }
+    $.post("poxy.php", {
+      num: '10',
+      name: '王菲'
+    }, function(data) {
+      console.log(JSON.stringify(data))
     })
   })
   </script>
