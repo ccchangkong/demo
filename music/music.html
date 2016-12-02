@@ -27,7 +27,7 @@
       var num = 3,
         name = '王菲',
         urlString = `http://s.music.qq.com/fcgi-bin/music_search_new_platform?t=0&n=${num}&aggr=1&cr=1&loginUin=0&format=json&inCharset=GB2312&outCharset=utf-8&notice=0&platform=jqminiframe.json&needNewCode=0&p=1&catZhida=0&remoteplace=sizer.newclient.next_song&w=${name}`;
-      $.post("poxy.php", {
+      $.post("proxy.php", {
         urlString
       }, function(data) {
         data = JSON.parse(data)
