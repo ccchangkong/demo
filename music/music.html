@@ -8,33 +8,61 @@
 </head>
 
 <body>
-<!-- http://www.zcool.com.cn/work/ZNzAyNzQ4NA==.html -->
+  <!-- http://www.zcool.com.cn/work/ZNzAyNzQ4NA==.html -->
   <audio src="http://ws.stream.qqmusic.qq.com/108661547.m4a?fromtag=46" controls></audio>
+  <img src="http://imgcache.qq.com/music/photo/album_300/20/300_albumpic_140820_0.jpg" alt="">
+  <div class="box"></div>
   <script>
   $(function() {
       // 歌词
-      // var id = 101369814
-      // var txt = `http://music.qq.com/miniportal/static/lyric/${ id %100}/${id}.xml`;
+      var id = 101369814,
+        src = `http://ws.stream.qqmusic.qq.com/${id}.m4a?fromtag=46`
+      var txt = `http://music.qq.com/miniportal/static/lyric/${id%100}/${id}.xml`;
+      // console.log(txt);
       // http://music.qq.com/miniportal/static/lyric/14/101369814.xml
       // 图片
-      // var image_id = 140820,width = 300;
-      // var pic = `http://imgcache.qq.com/music/photo/album_${width}/${image_id%100}/${width}_albumpic_${image_id}_0.jpg`;
-      // console.log(pic)
-      // http://imgcache.qq.com/music/photo/album_500/56/500_albumpic_852856_0.jpg
+      var image_id = 140820,
+        width = 300,
+        pic = `http://imgcache.qq.com/music/photo/album_${width}/${image_id%100}/${width}_albumpic_${image_id}_0.jpg`;
+      console.log(pic)
+        // http://imgcache.qq.com/music/photo/album_500/56/500_albumpic_852856_0.jpg
 
       // 新歌榜：http://music.qq.com/musicbox/shop/v3/data/hit/hit_newsong.js
       // 总榜：http://music.qq.com/musicbox/shop/v3/data/hit/hit_all.js
       var num = 3,
         name = '王菲',
         urlString = `http://s.music.qq.com/fcgi-bin/music_search_new_platform?t=0&n=${num}&aggr=1&cr=1&loginUin=0&format=json&inCharset=GB2312&outCharset=utf-8&notice=0&platform=jqminiframe.json&needNewCode=0&p=1&catZhida=0&remoteplace=sizer.newclient.next_song&w=${name}`;
-      $.post("proxy.php", {
-        urlString
-      }, function(data) {
-        data = JSON.parse(data)
-        data['data']['song']['list'].forEach(
-          e => console.log(e['f'])
-        )
-      })
+      // $.post("proxy.php", {
+      //   urlString
+      // }, function(data) {
+      //   data = JSON.parse(data)
+      //   data['data']['song']['list'].forEach(
+      //     e => console.log(e['f'])
+      //   )
+      // })
+          $.post("proxy.php", {
+              txt
+            }, function(data) {
+      console.log(data);
+            })
+
+      $.ajax({
+        type: "get",
+        async: false,
+        url: "http://music.qq.com/musicbox/shop/v3/data/hit/hit_newsong.js",
+        dataType: "jsonp",
+        jsonp: "callback",
+        jsonpCallback: "JsonCallback",
+        // contentType: "application/jsonp; charset=gbk",
+        scriptCharset: 'GBK',
+        success: function(data) {
+          // console.log(JSON.stringify(data))
+          // $('.box').html(JSON.stringify(data))
+        },
+        error: function() {
+          alert('fail');
+        }
+      });
     })
     // var data = {
     //   "code": 0,
