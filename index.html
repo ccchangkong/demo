@@ -1,72 +1,76 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<title></title>
-		<style type="text/css">
-			li {
-				padding: 20px;
-				transition: .5s;
-			}
-			
-			li:hover {
-				background-color: #333;
-			}
-			
-			li.Act {
-				background-color: #666;
-			}
-		</style>
-	</head>
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <style type="text/css">
+  li {
+    padding: 20px;
+    transition: .5s;
+  }
+  
+  li:hover {
+    background-color: #333;
+  }
+  
+  li.Act {
+    background-color: #666;
+  }
+  </style>
+</head>
 
-	<body>
-		<ul>
-			<li>1</li>
-			<li>2</li>
-			<li>3</li>
-			<li>4</li>
-			<li>5</li>
-			<li>6</li>
-		</ul>
-		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-		<script type="text/javascript">
-			var count = 0,
-				ts;
-			$("li").click(function() {
-				console.log($(this).index());
-				$(this).addClass('Act').siblings().removeClass('Act')
-			})
-			$("li").hover(function() {
-				count = $(this).index()
-				$('li').eq(count).triggerHandler('click');
-				clearTimeout(ts);
-			}, function() {
-				//	timer()
-				ts = setTimeout(function() {
-					timer()
-				}, 1000)
-			})
+<body>
+<button class="btn">222</button>
+<div class="test"></div>
+  <ul>
+    <li class="Act">1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+  </ul>
+  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  <script type="text/javascript">
+  var oTest = document.querySelector('.test');
+  var oBtn = document.querySelector('.btn');
+  oBtn.onclick = function() {
+    // var a = oTest.style.display;
+    var a =document.defaultView.getComputedStyle(oTest, null).display; 
+    console.log(a); //输出空
+    a == 'block' ? a = 'none' : a = 'block';
+  };
+  var count = 0,
+    ts;
 
-			function timer() {
-				//				console.log(++count);
-				$('li').eq(count++).triggerHandler('click');
-				count = count % 6
-				ts = setTimeout(function() {
-					timer()
-				}, 1000)
+  function move($el) {
+    $el.addClass('Act').siblings().removeClass('Act')
+  }
+  // $("li").click(function() {
+  //   console.log($(this).index());
+  //   move($(this));
+  // })
+  $("li").hover(function() {
+    count = $(this).index()
+    move($('li').eq(count))
+    clearTimeout(ts);
+  }, function() {
+    ts = setTimeout(function() {
+      timer()
+    }, 1000)
+  })
 
-				//				if(count < 6) {
-				//					ts = setTimeout(function() {
-				//						timer()
-				//					}, 1000)
-				//				} else {
-				//					clearTimeout(timer);
-				//					console.log("over");
-				//				}
-			}
-			timer()
-		</script>
-	</body>
+  function timer() {
+    //        console.log(++count);
+    move($('li').eq(count++))
+    count = count % 6
+    ts = setTimeout(function() {
+      timer()
+    }, 1000)
+  }
+  timer()
+  </script>
+</body>
 
 </html>
