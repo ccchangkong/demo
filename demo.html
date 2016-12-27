@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="https://lib.baomitu.com/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <button class="btn1">111</button>
+  <button class="btn2">222</button>
+  <div class="a1">
+    <li class="1b"></li>
+    <li class="2b"></li>
+    <li class="3b"></li>
+    <li class="4b"></li>
+  </div>
+  <div class="a2">
+    <li class="5b"></li>
+    <li class="6b"></li>
+    <li class="7b"></li>
+  </div>
+  <div class="a3"></div>
+  <div class="a4"></div>
+  <script>
+  $(function() {
+  	var data = [11,22,33,44]
+    $('.btn1').click(function() {
+    	alert($('.a1').find('li').length)
+      for (var i = 0; i <4; i++) {
+       $('.a1 li').eq(i).html(data[i])
+      }
+    })
+        $('.btn2').click(function() {
+      for (var i = 0; i <3; i++) {
+       $('.a2 li').eq(i).html(i)
+      }
+    })
+  })
+  </script>
+</body>
+
+</html>
