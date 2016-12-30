@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <style type="text/css">
+  </style>
+</head>
+
+<body>
+<input type="text" value='2333' readonly="false" class="i">
+<button class="btn">233</button>
+
+  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  <script type="text/javascript">
+$('.btn').click(function () {
+	alert(Object.prototype.toString.call($('.i').prop('readonly')));
+	$('.i').prop('readonly',!$('.i').prop('readonly'));
+	alert($('.i').prop('readonly'))
+})
+  </script>
+</body>
+
+</html>
