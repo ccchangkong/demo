@@ -27,12 +27,20 @@
         <div  v-show="!Math.random() > 0.5">
             Not sorry
         </div>
+        <ul>
+           <li v-for="item in items"><span @click='tog(item)' v-show='item.show'>{{item.show}}</span></li>
+        </ul>
     </div>
     <script>
     new Vue({
         el: '#app',
         data: {
             selected: 'A',
+            items:[
+            {show:true},
+            {show:true},
+            {show:true}
+            ],
             options: [{
                 text: 'One',
                 value: 'A'
@@ -43,6 +51,11 @@
                 text: 'Three',
                 value: 'C'
             }]
+        },
+        methods:{
+            tog (i) {
+                i.show=!i.show
+            }
         }
     })
     </script>
