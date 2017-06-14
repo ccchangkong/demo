@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="test"></div>
+  <script>
+  // body...
+  let list = [{
+    id: 11,
+    n: 111
+  }, {
+    id: 12,
+    n: 121
+  }, {
+    id: 13,
+    n: 113
+  }]
+  list.push({
+      id: 14,
+      n: 131
+    }, {
+      id: 12,
+      n: 121
+    })
+    // list = Array.from(new Set(list))
+    // console.log(list);
+  document.getElementById('test').innerHTML = list[0].id
+  var nn = []
+
+  function unique(a) {
+    var res = a.filter((item, index, array) => {
+      let bl = nn.indexOf(item.id) === -1
+      nn.push(item.id)
+      return bl
+    });
+    return res;
+  }
+  console.log(nn);
+  var aa = unique(list)
+  console.log(aa);
+  </script>
+</body>
+
+</html>

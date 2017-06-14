@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>MINI-TextField</title>
+  <!-- <script src="../../../boot.js" type="text/javascript"></script> -->
+  <script type="text/javascript" src="../../dialogs/internal.js"></script>
+  <link href="//lib.baomitu.com/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+  <script src="//lib.baomitu.com/jquery/3.2.1/jquery.min.js"></script>
+  <!--      <link href="../../../../styles/form.css" rel="stylesheet" type="text/css" /> -->
+</head>
+
+<!-- <body>
+  <form id="miniForm">
+    <table class="table-detail" cellspacing="1" cellpadding="0">
+      <caption>文本框基础属性</caption>
+      <tr>
+        <th>字段属性*</th>
+        <td>
+          <input class="mini-textbox" name="name" id="name" required="true" vtype="maxLength:80" style="width:90%" />
+        </td>
+        <th>必填*</th>
+        <td>
+          <input type='checkbox' name="isRequired" id="isRequired" />是
+        </td>
+      </tr>
+    </table>
+  </form>
+  <script type="text/javascript">
+  function createElement(type, name) {
+    var element = null;
+    try {
+      element = document.createElement('<' + type + ' name="' + name + '">');
+    } catch (e) {}
+    if (element == null) {
+      element = document.createElement(type);
+      element.name = name;
+    }
+    return element;
+  }
+
+  // mini.parse();
+  // var form=new mini.Form('miniForm');
+
+  //编辑的控件的值
+  var oNode = null,
+    thePlugins = 'textfield';
+
+  window.onload = function() {
+      //若控件已经存在，则设置回调其值
+      if (UE.plugins[thePlugins].editdom) {
+        //
+        oNode = UE.plugins[thePlugins].editdom;
+        //获得字段名称
+        var name = oNode.getAttribute('name');
+        var isRequried = oNode.getAttribute("required");
+        $('#name').val(name);
+        $('#isRequired').val(isRequried);
+      }
+    }
+    //取消按钮
+  dialog.oncancel = function() {
+    if (UE.plugins[thePlugins].editdom) {
+      delete UE.plugins[thePlugins].editdom;
+    }
+  };
+  //确认
+  dialog.onok = function() {
+
+    // form.validate();
+    // if (form.isValid() == false) {
+    //     return false;
+    // }
+    var name = $('#name').val();
+    var isRequired = $('#isRequired').val();
+    // alert(name)
+    // alert(isRequired)
+    //控件尚未存在，则创建新的控件，否则进行更新
+    if (!oNode) {
+      try {
+
+        oNode = createElement('input', name);
+        oNode.setAttribute('type', 'text');
+        oNode.setAttribute('class', 'mini-textbox');
+        oNode.setAttribute('required', isRequired);
+        //需要设置该属性，否则没有办法其编辑及删除的弹出菜单
+        oNode.setAttribute('plugins', thePlugins);
+
+
+        // editor.execCommand('insertHtml',oNode.outerHTML);
+        // var pp='<p>23333333</p>'
+        var pp = '<textarea>23334</textarea>'
+        editor.execCommand('insertHtml', pp);
+        // alert(oNode.outerHTML)
+      } catch (e) {
+
+        try {
+          editor.execCommand('error');
+        } catch (e) {
+          alert('控件异常，请联系技术支持');
+        }
+        return false;
+      }
+    } else { //已经存在，则更新属性则可
+      oNode.setAttribute('title', name);
+      oNode.setAttribute('required', isRequired);
+      delete UE.plugins[thePlugins].editdom;
+    }
+  };
+  </script>
+</body> -->
+
+<body>
+  <div class="content">
+    <table class="table table-bordered table-striped table-hover">
+      <tbody>
+        <tr>
+          <th><span>字段名称</span><span class="label label-important">*</span></th>
+          <th><span>验证</span> </th>
+        </tr>
+        <tr>
+          <td>
+            <input id="orgname" type="text" placeholder="必填项">
+          </td>
+          <!--<td> <label class="checkbox"><input id="orgrich" type="checkbox"/> 富文本形式 </label> </td>-->
+          <td>
+            <label>必填
+              <input type="checkbox" id="orgrequired">
+            </label>
+          </td>
+        </tr>
+        <tr>
+          <th colspan="2"><span>控件样式</span> </th>
+        </tr>
+        <tr>
+          <td colspan="2">
+            宽：
+            <input id="orgwidth" type="text" value="300" class="input-small span1" placeholder="auto"> px&nbsp;&nbsp; 高：
+            <input id="orgheight" type="text" value="80" class="input-small span1" placeholder="auto"> px&nbsp;&nbsp; 字体大小：
+            <input id="orgfontsize" type="text" value="" class="input-small span1" placeholder="auto"> px
+            <label class="checkbox">
+              <input id="orgrich" type="checkbox"> 富文本形式 </label>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <label for="orgvalue">默认值</label>
+            <textarea class="input-block-level" rows="3" id="orgvalue" placeholder="多行文本框默认值..."></textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script type="text/javascript">
+  var isDigit = function(s) {
+    var patrn = /^[0-9]{1,20}$/;
+    if (!patrn.exec(s)) return false;
+    return true;
+  }
+  var oNode = null,
+    thePlugins = 'textarea',
+    originalName = null;
+  window.onload = function() {
+    console.log(UE.plugins[thePlugins].editdom)
+    if (UE.plugins[thePlugins].editdom) {
+      oNode = UE.plugins[thePlugins].editdom;
+      var gValue = oNode.getAttribute('value') == null ? '' : oNode.getAttribute('value').replace(/&quot;/g, "\"");
+      var gName = oNode.getAttribute('name') == null ? '' : oNode.getAttribute('name').replace(/&quot;/g, "\"");
+      var gFontSize = oNode.style.fontSize.replace(/px/g, "");
+      var gWidth = oNode.style.width.replace(/px/g, "");
+      var gHeight = oNode.style.height.replace(/px/g, "");
+      var gValidationRequired = oNode.getAttribute('orgrequired') == null ? '' : oNode.getAttribute('orgrequired').replace(/&quot;/g, "\"");
+      var gRich = oNode.getAttribute('orgrich');
+      gValue = gValue == null ? '' : gValue;
+      gName = gName == null ? '' : gName;
+      $G('orgvalue').value = gValue;
+      $G('orgname').value = gName;
+      if (gRich == '1') {
+        $G('orgrich').checked = true;
+      }
+      $G('orgfontsize').value = gFontSize;
+      $G('orgwidth').value = gWidth;
+      $G('orgheight').value = gHeight;
+      $G('orgrequired').checked = gValidationRequired == '1' && gValidationRequired.length;
+      originalName = gName;
+    }
+  }
+  dialog.oncancel = function() {
+    if (UE.plugins[thePlugins].editdom) {
+      delete UE.plugins[thePlugins].editdom;
+    }
+  };
+  dialog.onok = function() {
+    if ($G('orgname').value == '') {
+      alert('请输入字段名称');
+      $G('orgname').focus();
+      return false;
+    }
+    var gValue = $G('orgvalue').value.replace(/\"/g, "&quot;"),
+      gName = $G('orgname').value.replace(/\"/g, "&quot;"),
+      gFontSize = $G('orgfontsize').value,
+      gWidth = $G('orgwidth').value,
+      gHeight = $G('orgheight').value,
+      gRequired = $G('orgrequired').checked,
+      gRich = $G('orgrich').checked;
+
+    if (!oNode) {
+      var editorHtml = editor.getContent();
+      if ($('<div/>').append(editorHtml).find('[name="' + gName + '"]').length) {
+        alert('字段名称已存在');
+        $G('orgname').focus();
+        return false;
+      }
+      try {
+        var html = '<textarea ';
+        html += ' name = "' + gName + '"';
+        html += ' value = "' + gValue + '"';
+        html += ' class = "custom"';
+        html += ' ttype = "textarea"';
+        //if ($G('orgrich').checked) {
+        //    html += ' orgrich = "1"';
+        //} else {
+        //    html += ' orgrich = "0"';
+        //}
+
+        if (gRequired) {
+          html += ' orgrequired="1" ';
+        }
+        if (gRich) {
+          html += ' orgrich="1" ';
+        }
+        html += ' style = "';
+        if (gFontSize != '') {
+          if (!isDigit(gFontSize)) {
+            alert("字体大小只能输入数字");
+            return false;
+          }
+          html += 'font-size:' + gFontSize + 'px;';
+        }
+        if (gWidth != '') {
+          if (!isDigit(gWidth)) {
+            alert("控件宽度只能输入数字");
+            return false;
+          }
+          html += 'width:' + gWidth + 'px;';
+        }
+        if (gHeight != '') {
+          if (!isDigit(gHeight)) {
+            alert("控件高度只能输入数字");
+            return false;
+          }
+          html += 'height:' + gHeight + 'px;';
+        }
+        html += '">';
+        html += gValue + '</textarea>';
+
+         alert(html.length)
+        editor.execCommand('inserthtml', html,true);
+      } catch (e) {
+        try {
+          editor.execCommand('error');
+        } catch (e) {
+          alert('控件异常，请到 [18社区] 反馈或寻求帮助！');
+        }
+        return false;
+      }
+    } else {
+      var editorHtml = editor.getContent();
+      if (originalName == gName) {
+        if ($('<div/>').append(editorHtml).find('[name="' + gName + '"]').length > 1) {
+          alert('字段名称已存在');
+          $G('orgname').focus();
+          return false;
+        }
+      } else {
+        if ($('<div/>').append(editorHtml).find('[name="' + gName + '"]').length) {
+          alert('字段名称已存在');
+          $G('orgname').focus();
+          return false;
+        }
+      }
+      oNode.setAttribute('name', gName);
+      oNode.setAttribute('value', gValue);
+      oNode.innerHTML = gValue;
+      //if ($G('orgrich').checked) {
+      //    oNode.setAttribute('orgrich', 1);
+      //} else {
+      //    oNode.setAttribute('orgrich', 0);
+      //}
+
+      oNode.setAttribute('orgrequired', gRequired ? '1' : '0');
+      oNode.setAttribute('orgrich', gRich ? '1' : '0');
+      if (gFontSize != '') {
+        if (!isDigit(gFontSize)) {
+          alert("字体大小只能输入数字");
+          return false;
+        }
+        oNode.style.fontSize = gFontSize + 'px';
+      }
+      if (gWidth != '') {
+        if (!isDigit(gWidth)) {
+          alert("控件宽度只能输入数字");
+          return false;
+        }
+        oNode.style.width = gWidth + 'px';
+      }
+      if (gHeight != '') {
+        if (!isDigit(gHeight)) {
+          alert("控件高度只能输入数字");
+          return false;
+        }
+        oNode.style.height = gHeight + 'px';
+      }
+      delete UE.plugins[thePlugins].editdom;
+    }
+  };
+  </script>
+</body>
+
+</html>
