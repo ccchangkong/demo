@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+  .c_box {
+    /*    width: 100%;
+    padding-bottom: 75%;
+*/
+    width: 1000px;
+    height: 750px;
+  }
+  </style>
+</head>
+
+<body>
+  <video class="c_box"></video>
+  <canvas></canvas>
+  <p>
+    <select id="videoSource"></select>
+    <button id="snap">截取图像</button>
+    <button id="close">关闭摄像头</button>
+    <button id="upload">上传图像</button>
+  </p>
+  <a id="uploaded" download="my.png"></a>
+  <script src="http://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  function $$(elem) {
+    return document.querySelector(elem);
+  }
+
+  // 获取媒体方法（旧方法）
+  navigator.getMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMeddia || navigator.msGetUserMedia;
+
+  var canvas = $$('canvas'),
+    context = canvas.getContext('2d'),
+    video = $$('video'),
+    snap = $$('#snap'),
+    close = $$('#close'),
+    upload = $$('#upload'),
+    uploaded = $$('#uploaded'),
+    mediaStreamTrack;
+  var videoSelect = $$('select#videoSource');
+
+  navigator.mediaDevices.enumerateDevices()
+    .then(gotDevices).then(getStream).catch(handleError);
+
+
+  videoSelect.onchange = getStream;
+
+  function gotDevices(deviceInfos) {
+    for (var i = 0; i < deviceInfos.length; ++i) {
+      var deviceInfo = deviceInfos[i];
+      var option = document.createElement('option');
+      option.value = deviceInfo.deviceId;
+      if (deviceInfo.kind === 'videoinput') {
+        option.text = deviceInfo.label ||
+          'camera ' +
+          (videoSelect.length + 1);
+        videoSelect.appendChild(option);
+      } else {
+        console.log('Found ome other kind of source/device: ', deviceInfo);
+      }
+    }
+    let old_value = localStorage.getItem('videoSelect')
+    if (old_value) {
+      $(videoSelect).find("option[value='" + old_value + "']").prop("selected", true)
+    }
+  }
+
+
+  function getStream() {
+    // 获取媒体方法（新方法）
+    // 使用新方法打开摄像头
+    localStorage.setItem('videoSelect', videoSelect.value)
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        optional: [{
+          sourceId: videoSelect.value
+        }]
+      },
+      audio: false
+    }).then(function(stream) {
+      console.log(stream);
+
+      mediaStreamTrack = typeof stream.stop === 'function' ? stream : stream.getTracks()[1];
+
+      video.src = (window.URL || window.webkitURL).createObjectURL(stream);
+      video.play();
+    }).catch(function(err) {
+      console.log(err);
+    })
+
+
+  }
+
+  function handleError(error) {
+    alert(error.name + ": " + error.message);
+  }
+
+  // 截取图像
+  snap.addEventListener('click', function() {
+    console.log($(video).width());
+    let height = $(video).height()
+    let width = $(video).width()
+
+    canvas.width = width
+    canvas.height = height
+    context.drawImage(video, 0, 0, width, height);
+    uploaded.href = canvas.toDataURL('image/png');
+    uploaded.click();
+  }, false);
+
+  // 关闭摄像头
+  close.addEventListener('click', function() {
+    mediaStreamTrack && mediaStreamTrack.stop();
+  }, false);
+
+  // 上传截取的图像
+  // upload.addEventListener('click', function() {
+  //   jQuery.post('/uploadSnap.php', {
+  //     snapData: canvas.toDataURL('image/png')
+  //   }).done(function(rs) {
+  //     rs = JSON.parse(rs);
+
+  //     console.log(rs);
+
+  //     uploaded.src = rs.path;
+  //   }).fail(function(err) {
+  //     console.log(err);
+  //   });
+  // }, false);
+  </script>
+  </script>
+</body>
+
+</html>
