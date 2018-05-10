@@ -1,0 +1,7 @@
+﻿$config1(108,4);$config2(98,9);$backolor(2);
+
+title：请3号到就诊服务中心
+
+message：请2号到就诊服务中心
+
+message：请1号到就诊服务中心

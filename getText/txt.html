@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link href="https://lib.baomitu.com/twitter-bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+  body {
+    background-color: rgb(49, 88, 153);
+  }
+
+  thead {
+    font-size: 4em;
+    color: rgb(1, 215, 216);
+  }
+
+  .table thead th {
+    border-bottom: none;
+  }
+
+  tbody {
+    font-size: 2em;
+    color: #fff;
+  }
+
+  .table td,
+  .table th {
+    border-top: none;
+  }
+  </style>
+  <script src="http://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <table class="table" id="table">
+    </table>
+  </div>
+  <script>
+  $(function() {
+    let $table = $('#table')
+    getTxt()
+
+    function getTxt() {
+      $.get('/test.txt', function(data) {
+        setHtml(data)
+      })
+    }
+
+    function setHtml(obj) {
+      let arr = obj.split("\r\n")
+      let str_header = ''
+      let str_body = ' <tbody>'
+      arr.forEach((el, i) => {
+        if (i == 1) {
+          str_header += `<thead>
+								    <tr>
+								      <th scope="col">${el.split('：')[1]}</th>
+								    </tr>
+								  </thead>`
+        }
+        if (i != 0 && i != 1&&el) {
+          str_body += `    <tr>
+      <th scope="row">${el.split('：')[1]}</th>
+    </tr>`
+        }
+      })
+      str_body += '</tbody>'
+      $table.html(str_header + str_body)
+    }
+
+    setInterval(function() {
+      getTxt()
+    }, 1000000);
+  })
+  </script>
+</body>
+
+</html>
