@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<!-- 	<script>
+		(function (doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function () {
+					var clientWidth = docEl.clientWidth;
+					if (!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+				};
+			if (!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script> -->
+	<link rel="stylesheet" type="text/css" href="static/css/common.css">
+	<link rel="stylesheet" type="text/css" href="static/css/index.css" />
+
+	<title>天气</title>
+</head>
+
+<body id="input">
+	<div class="wrapper">
+		<div class="box">
+		</div>
+
+	</div>
+
+
+	<script type="text/javascript" src="static/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript">
+
+		$(function () {
+
+$.ajax({
+          type: 'get',
+		  url:'http://jisutqybmf.market.alicloudapi.com/weather/query',
+		  data:{'city':'苏州'},
+          headers: {
+              'Authorization':'APPCODE 9e4c286e68f1431a908e29333dd9802d'
+          }
+      }).then(data=>{
+		  if(data.status=='0'){
+				console.log(data)
+			  var $t=data.result.daily[0]
+			 var $m=data.result.daily[1]
+
+			var str=`<div class="header">
+						<div class="h_cell">
+							<img  class="h_cell_c" src="static/img/${$t.day.weather}.png" alt="">
+							<div class="h_time h_cell_c">今日  ${$t.week}<br>${$t.date.replace(/\-/ig,"\/")}</div>
+						</div>
+						<div class="h_cell">
+							<img  class="h_cell_c" src="static/img/${$m.day.weather}.png" alt="">
+							<div class="h_time h_cell_c">明日  ${$m.week}<br>${$m.date.replace(/\-/ig,"\/")}</div>
+						</div>
+					</div>
+					<div class="body">
+						<div class="b_cell">
+							<div class="temp">${$t.night.templow}~${$t.day.temphigh}℃</div>
+							<div class="temp_info">${$t.day.weather}  ${$t.day.winddirect}  ${$t.day.windpower}</div>
+						</div>
+						<div class="b_cell">
+							<div class="temp">${$m.night.templow}~${$m.day.temphigh}℃</div>
+							<div class="temp_info">${$m.day.weather}  ${$m.day.winddirect}  ${$m.day.windpower}</div>
+						</div>
+					</div>`
+				$('.box').html(str)
+		  }
+		 
+	  })
+		})
+	</script>
+</body>
+
+</html>
