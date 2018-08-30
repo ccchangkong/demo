@@ -1,0 +1,264 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+margin: 0;
+padding: 0;
+border: 0;
+font-size: 100%;
+font: inherit;
+vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+display: block;
+}
+body {
+line-height: 1;
+}
+ol, ul {
+list-style: none;
+}
+blockquote, q {
+quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+content: '';
+content: none;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+a{
+	text-decoration:none;
+}
+html {
+  -ms-text-size-adjust: 100%; /* 2 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  overflow-y: scroll; /* 0 */
+  -webkit-overflow-scrolling: touch; /* 0 */
+}
+
+.fl{float:left;display:inline;}
+.fr{float:right;display:inline;}
+.oh{overflow:hidden}
+.dib{display:inline-block;*zoom:1;*display:inline;}
+.db{display:block}
+.dn{display:none}
+.pr{position:relative;}
+.pa{position:absolute;}
+.pi{position:inherit;}
+.br{border-radius:3px;}
+.vab{vertical-align:bottom;}
+.vam{vertical-align:middle;}
+.w100{width: 100%}
+
+
+/*--text--*/
+.fwn{font-weight:normal;}
+.fwb{font-weight:bold;}
+.ffa{font-family:Arial;}
+.ffg{font-family:Georgia;}
+.ffm{font-family:Microsoft YaHei;}
+.tac{text-align:center}
+.tar{text-align:right}
+.tal{text-align:left}
+.fs0{font-size:0;}
+
+
+/* 清浮动 */
+.clearfix {*zoom:1;}
+.clearfix:after {content: '';display: block;height: 0;overflow: hidden;clear: both;}
+/*文本溢出省略不换行*/
+.whitespace{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.breakAll{word-break:break-all;}
+/* 修复inline-block布局最后行元素不足的问题 */
+.justify_fix{display:inline-block; width:100%; height:0; overflow:hidden;}
+
+.cp{cursor:pointer;}
+.row * {
+    box-sizing: border-box;
+}
+
+.row:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+[class*="col-"] {
+    float: left;
+    position: relative;
+}
+
+.col-01 {
+    width: 10%;
+}
+
+.col-02 {
+    width: 20%;
+}
+
+.col-03 {
+    width: 30%;
+}
+
+.col-04 {
+    width: 40%;
+}
+
+.col-05 {
+    width: 50%;
+}
+
+.col-06 {
+    width: 60%;
+}
+
+.col-07 {
+    width: 70%;
+}
+
+.col-08 {
+    width: 80%;
+}
+
+.col-09 {
+    width: 90%;
+}
+
+.col-010 {
+    width: 100%;
+}
+
+.col-1 {
+    width: 8.33%;
+}
+
+.col-2 {
+    width: 16.66%;
+}
+
+.col-3 {
+    width: 25%;
+}
+
+.col-4 {
+    width: 33.33%;
+}
+
+.col-5 {
+    width: 41.66%;
+}
+
+.col-6 {
+    width: 50%;
+}
+
+.col-7 {
+    width: 58.33%;
+}
+
+.col-8 {
+    width: 66.66%;
+}
+
+.col-9 {
+    width: 75%;
+}
+
+.col-10 {
+    width: 83.33%;
+}
+
+.col-11 {
+    width: 91.66%;
+}
+
+.col-12 {
+    width: 100%;
+}
+
+
+/* 弹窗样式封装 */
+.confirm_box{
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: #000;
+	background-color: rgba(0,0,0,0.66);
+	z-index: 1;
+}
+.confirm{
+	border-radius: .15rem;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 5.6rem;
+	background-color: #fff;
+	box-sizing: border-box;
+	padding: .6rem .3rem;
+}
+.c_close{
+	width: .6rem;
+	position: absolute;
+	right: 0;
+	top: -.8rem;
+	cursor: pointer;
+}
+
+.c_content .c_vip{
+	width: 1.56rem;
+	margin-bottom: .45rem;
+}
+.c_content p{
+	font-size: .3rem;
+	color: #999;
+	line-height: .5rem;
+	margin-bottom: .45rem;
+}
+.c_action{
+}
+.c_btn{
+	width: 3.2rem;
+	margin: auto;
+	line-height: .8rem;
+	cursor: pointer;
+	font-size: .36rem;
+	color: #fff;
+	border-radius: .1rem;
+	background-color: #367bed;
+}
+
+/* 文本左右横线 */
+.c_title:before,.c_title:after{
+	content: '';
+	display: inline-block;
+	width: .5rem;
+	height: 1px;
+	background-color: #cccccc;
+	vertical-align: middle;
+}
+.c_title:before{
+	margin-right: .1rem;
+}
+.c_title:after{
+	margin-left: .1rem;
+}
