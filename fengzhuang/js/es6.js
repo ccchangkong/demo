@@ -40,9 +40,9 @@
 // })
 
 class Widget {
-	constructor(w, h) {
-		this.w = w || 50;
-		this.h = h || 50;
+	constructor(w=50, h=50) {
+		this.w = w ;
+		this.h = h ;
 		this.$el = null;
 	}
 	render($where) {
