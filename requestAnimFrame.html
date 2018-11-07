@@ -1,159 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <title>mySnow- oH!!!Sexy!</title>
-  <style type="text/css">
-  body,
-  div {
-    margin: 0;
-    padding: 0;
-  }
+	<head>
+		<meta charset="UTF-8">
+		<title>mySnow- oH!!!Sexy!</title>
+		<style type="text/css">
+			body,
+			div {
+				margin: 0;
+				padding: 0;
+			}
 
-  body {
-    background: #000;
-  }
+			body {
+				background: #000;
+			}
 
-  #curtain {
-    width: 100%;
-    height: 600px;
-    background-color: #111123;
-  }
+			#curtain {
+				width: 100%;
+				height: 600px;
+				background-color: #111123;
+			}
 
-  .snow {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #fff;
-    position: absolute;
-    animation: mysnow 10s;
-  }
+			.snow {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background: #fff;
+				position: absolute;
+				animation: mysnow 10s;
+			}
 
-  @keyframes mysnow {
-    0% {
-      opacity: 0;
-    }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
+			@keyframes mysnow {
+				0% {
+					opacity: 0;
+				}
 
-  .empty {
-    display: none;
-  }
-  </style>
-</head>
+				50% {
+					opacity: 1;
+				}
 
-<body>
-  <div id="curtain"></div>
-</body>
-<script type="text/javascript">
-window.requestAnimFrame = (function() {
-  return window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    function(callback) {
-      window.setTimeout(callback, 1000 / 60);
-    };
-})();
-(function() {
-  var $ = function(id) {
-    return typeof id === "string" ? document.getElementById(id) : id
-  };
-  var curtain = $("curtain");
-  var maxWidth = curtain.clientWidth - 50;
-  var maxHeight = curtain.clientHeight;
+				100% {
+					opacity: 0;
+				}
+			}
 
-  var snowControl = function() {};
+			.empty {
+				display: none;
+			}
+		</style>
+	</head>
 
-  snowControl.prototype = {
-    Obj: [],
-    maxCount: 30,
-    count: 0,
-    Prepare: function() {
-         // 初始化位置参数
-      for (var i = 0; i < this.maxCount; i++) {
-        var o = {
-          positionX: Math.ceil(Math.random() * maxWidth),
-          positionY: Math.ceil(Math.random() * 50),
-          speed: Math.ceil(Math.random() * .001 + 1),
-          shake: Math.ceil(Math.random() * 3)
-        };
-        this.Obj.push(o);
-      };
-      this.Letsgo()
-    },
-    Letsgo: function() {
-      var _this = this;
-      // 每隔.4s新生产元素
-      var gotimer = setInterval(function() {
-        if (_this.count == _this.maxCount) {
-          clearInterval(gotimer);
-        } else {
-          _this.Init();
-        }
-      }, 400);
-    },
-    Init: function() {
-      if (this.Obj.length) {
-        var oDiv = document.createElement("div");
-        oDiv.className = "snow";
-        var now = this.Obj.shift();
-        oDiv.style.top = now.positionY + "px";
-        oDiv.style.left = now.positionX + "px";
-        curtain.appendChild(oDiv);
-        ++this.count;
-        // 移动元素
-        this.Move(oDiv, now);
+	<body>
+		<div id="curtain"></div>
+	</body>
+	<script type="text/javascript">
+		var lastTime = 0;
+		var vendors = ['webkit', 'moz', 'ms', 'o'];
+		for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+			window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+			window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] +
+				'CancelRequestAnimationFrame'];
+		}
+		if (!window.requestAnimationFrame) {
+			window.requestAnimationFrame = function(callback, element) {
+				var currTime = new Date().getTime();
+				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+				var id = window.setTimeout(function() {
+					callback(currTime + timeToCall);
+				}, timeToCall);
+				lastTime = currTime + timeToCall;
+				return id;
+			};
+		}
+		if (!window.cancelAnimationFrame) {
+			window.cancelAnimationFrame = function(id) {
+				clearTimeout(id);
+			};
+		}
 
-      }
-    },
-    Move: function(oDiv, now) {
-      var _this = this
-      requestAnimFrame(function() {
-          if (now.positionX < maxWidth && now.positionY < maxHeight - 50) {
-             // 没到边界接着动
-            now.positionY = now.positionY + now.speed;
-            now.positionX = now.positionX + now.shake;
-            oDiv.style.top = now.positionY + "px";
-            oDiv.style.left = now.positionX + "px";
-            _this.Move(oDiv, now);
-          } else {
-            // 到啦，这个元素复用拉
-            now.positionX = Math.ceil(Math.random() * maxWidth);
-            now.positionY = Math.ceil(Math.random() * 50);
-            oDiv.style.left = now.positionX + "px";
-            oDiv.style.top = 0 + "px";
-            _this.Move(oDiv, now);
-          }
-        })
-        // var timer = setInterval(function () {
-        //   if (now.positionX < maxWidth && now.positionY < maxHeight - 50) {
-        //     now.positionY = now.positionY + now.speed;
-        //     now.positionX = now.positionX + now.shake;
-        //     oDiv.style.top = now.positionY + "px";
-        //     oDiv.style.left = now.positionX + "px";
-        //   } else {
-        //     now.positionX = Math.ceil(Math.random() * maxWidth);
-        //     now.positionY = Math.ceil(Math.random() * 50);
-        //     oDiv.style.left = now.positionX + "px";
-        //     oDiv.style.top = 0 + "px";
-        //   }
-        // }, 30);
-    },
+		(function() {
+			var $ = function(id) {
+				return typeof id === "string" ? document.getElementById(id) : id
+			};
+			var curtain = $("curtain");
+			var maxWidth = curtain.clientWidth - 50;
+			var maxHeight = curtain.clientHeight;
+
+			var snowControl = function() {};
+
+			snowControl.prototype = {
+				Obj: [],
+				maxCount: 30,
+				count: 0,
+				Prepare: function() {
+					// 初始化位置参数
+					for (var i = 0; i < this.maxCount; i++) {
+						var o = {
+							positionX: Math.ceil(Math.random() * maxWidth),
+							positionY: Math.ceil(Math.random() * 50),
+							speed: Math.ceil(Math.random() * .001 + 1),
+							shake: Math.ceil(Math.random() * 3)
+						};
+						this.Obj.push(o);
+					};
+					this.Letsgo()
+				},
+				Letsgo: function() {
+					var _this = this;
+					// 每隔.4s新生产元素
+					var gotimer = setInterval(function() {
+						if (_this.count == _this.maxCount) {
+							clearInterval(gotimer);
+						} else {
+							_this.Init();
+						}
+					}, 400);
+				},
+				Init: function() {
+					if (this.Obj.length) {
+						var oDiv = document.createElement("div");
+						oDiv.className = "snow";
+						var now = this.Obj.shift();
+						oDiv.style.top = now.positionY + "px";
+						oDiv.style.left = now.positionX + "px";
+						curtain.appendChild(oDiv);
+						++this.count;
+						// 移动元素
+						this.Move(oDiv, now);
+
+					}
+				},
+				Move: function(oDiv, now) {
+					var _this = this
+					window.requestAnimationFrame(function() {
+						if (now.positionX < maxWidth && now.positionY < maxHeight - 50) {
+							// 没到边界接着动
+							now.positionY = now.positionY + now.speed;
+							now.positionX = now.positionX + now.shake;
+							oDiv.style.top = now.positionY + "px";
+							oDiv.style.left = now.positionX + "px";
+							_this.Move(oDiv, now);
+						} else {
+							// 到啦，这个元素复用拉
+							now.positionX = Math.ceil(Math.random() * maxWidth);
+							now.positionY = Math.ceil(Math.random() * 50);
+							oDiv.style.left = now.positionX + "px";
+							oDiv.style.top = 0 + "px";
+							_this.Move(oDiv, now);
+						}
+					})
+					// var timer = setInterval(function () {
+					//   if (now.positionX < maxWidth && now.positionY < maxHeight - 50) {
+					//     now.positionY = now.positionY + now.speed;
+					//     now.positionX = now.positionX + now.shake;
+					//     oDiv.style.top = now.positionY + "px";
+					//     oDiv.style.left = now.positionX + "px";
+					//   } else {
+					//     now.positionX = Math.ceil(Math.random() * maxWidth);
+					//     now.positionY = Math.ceil(Math.random() * 50);
+					//     oDiv.style.left = now.positionX + "px";
+					//     oDiv.style.top = 0 + "px";
+					//   }
+					// }, 30);
+				},
 
 
 
-  };
+			};
 
-  var snow = new snowControl();
-  snow.Prepare();
-  console.log(snow);
-})();
-</script>
+			var snow = new snowControl();
+			snow.Prepare();
+			console.log(snow);
+		})();
+	</script>
 
 </html>
