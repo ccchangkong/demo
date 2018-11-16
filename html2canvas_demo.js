@@ -1,5 +1,5 @@
-			$(function() {
- // <script src="https://lib.baomitu.com/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+$(function() {
+				// <script src="https://lib.baomitu.com/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 
 				//获取像素密度
 				function getPixelRatio(context) {
@@ -11,6 +11,18 @@
 						context.backingStorePixelRatio || 1;
 					return (window.devicePixelRatio || 1) / backingStore;
 				}
+
+				// 或者
+				function backingScale() {
+					if (window.devicePixelRatio && window.devicePixelRatio > 1) {
+						return window.devicePixelRatio;
+					}
+					return 1;
+				};
+
+
+
+
 
 				function html_Canvas() {
 					var shareContent = $('body')[0]; // 需要绘制的部分的 (原生）dom 对象 ，注意容器的宽度不要使用百分比，使用固定宽度，避免缩放问题
@@ -25,6 +37,7 @@
 					context.scale(scaleBy, scaleBy);
 
 					var opts = {
+						useCORS: true,
 						allowTaint: true, //允许加载跨域的图片
 						tainttest: true, //检测每张图片都已经加载完成
 						scale: scaleBy, // 添加的scale 参数
@@ -40,11 +53,33 @@
 						$('body').html($html)
 					});
 				}
+				//解决跨域，将跨域图片路径转为base64格式
+				function printScreen() {
+					var img = new Image();
+					var canvas2 = document.createElement('canvas');
+					var ctx = canvas2.getContext('2d');
+					img.crossOrigin = 'Anonymous';
+					setTimeout(function() {
+						img.src = $('#ossImg').attr('222');
+					}, 1000)
 
+					img.onload = function() {
+						canvas2.height = img.height;
+						canvas2.width = img.width;
+						ctx.drawImage(img, 0, 0);
+						var dataURL = canvas2.toDataURL('image/png');
+						// 　　　　　　$('#ossImg').attr('src',dataURL);
+						canvas2 = null;
+
+						//重新给img赋值成功后，执行截图方法
+						html_Canvas()
+
+					}
+				}
 				$('body').show()
 
 				setTimeout(function() {
-					html_Canvas()
+					printScreen()
 				}, 100)
 
 			})
