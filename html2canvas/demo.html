@@ -51,96 +51,67 @@
 		 src="https://lib.baomitu.com/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 		<script type="text/javascript">
 			$(function() {
-				//获取像素密度
-				function getPixelRatio(context) {
 					var backingStore = context.backingStorePixelRatio ||
-						context.webkitBackingStorePixelRatio ||
-						context.mozBackingStorePixelRatio ||
-						context.msBackingStorePixelRatio ||
-						context.oBackingStorePixelRatio ||
-						context.backingStorePixelRatio || 1;
-					return (window.devicePixelRatio || 1) / backingStore;
-				}
+			window.onbeforeunload = function() {
+				window.scrollTo(0, 0);
+			}
+			//获取像素密度
+			function getPixelRatio(context) {
+				var backingStore = context.backingStorePixelRatio ||
+					context.webkitBackingStorePixelRatio ||
+					context.mozBackingStorePixelRatio ||
+					context.msBackingStorePixelRatio ||
+					context.oBackingStorePixelRatio ||
+					context.backingStorePixelRatio || 1;
+				return (window.devicePixelRatio || 1) / backingStore;
+			}
 
-				function backingScale() {
-					if (window.devicePixelRatio && window.devicePixelRatio > 1) {
-						return window.devicePixelRatio;
+			function html_Canvas($el) {
+				var shareContent = $el[0]; // 需要绘制的部分的 (原生）dom 对象 ，注意容器的宽度不要使用百分比，使用固定宽度，避免缩放问题
+				var width = shareContent.offsetWidth; // 获取(原生）dom 宽度
+				var height = shareContent.offsetHeight; // 获取(原生）dom 高
+				var offsetTop = shareContent.offsetTop; //元素距离顶部的偏移量
+				var offsetLeft = shareContent.offsetLeft; //元素距离左侧的偏移量
+				var canvas = document.createElement('canvas'); //创建canvas 对象
+				var context = canvas.getContext('2d');
+				var scaleBy = getPixelRatio(context); //获取像素密度的方法 (也可以采用自定义缩放比例)
+				canvas.width = (width) * scaleBy; //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
+				canvas.height = (height) * scaleBy; // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
+				context.scale(scaleBy, scaleBy);
+
+				var rect = shareContent.getBoundingClientRect(); //获取元素相对于视察的偏移量
+				context.translate(-rect.left, -rect.top);
+
+				var opts = {
+					useCORS: true,
+					allowTaint: true, //允许加载跨域的图片
+					tainttest: true, //检测每张图片都已经加载完成
+					scale: scaleBy, // 添加的scale 参数
+					canvas: canvas,
+					logging: false, //日志开关，发布的时候记得改成false
+					width: width, //dom 原始宽度
+					height: height, //dom 原始高度
+					onrendered: function(canvas) {
+						var imgurl = canvas.toDataURL('image/png', 1);
+						var $html = '<img src="' + imgurl + '" alt="" style="width:6.28rem;">'
+						$('.share_card_box').html($html)
+					},
+					onclone: function(doc) {
+						
 					}
-					return 1;
 				};
 
-				function parsePixelValue(value) {
-					return parseInt(value, 10);
-				};
+				html2canvas(shareContent, opts)
 
-				function html_Canvas() {
-
-
-					var shareContent = $('.share_card')[0];
-					var scaleBy = backingScale();
-					var box = window.getComputedStyle(shareContent);
-					var w = parsePixelValue(box.width, 10);
-					var h = parsePixelValue(box.height, 10);
-					var canvas = document.createElement('canvas');
-
-
-					// 就是这里了
-					canvas.width = w * scaleBy;
-					canvas.height = h * scaleBy;
-					canvas.style.width = w + 'px';
-					canvas.style.height = h + 'px';
-
-					var context = canvas.getContext('2d');
-					context.scale(scaleBy, scaleBy);
-
-					html2canvas(shareContent, {
-						useCORS: true,
-						canvas: canvas, // 把canvas传进去
-						onrendered: function(canvas) {
-							var imgurl = canvas.toDataURL('image/png', 1);
-							var $html = '<img src="' + imgurl + '" alt="" style="width:' + w + 'px">'
-							$('body').html($html)
-						},
-						logging: true,
-						onclone: function(doc) {
-							console.log(doc)
-							// 										hiddenDiv = doc.getElementById(domId);
-							// 										hiddenDiv.style.display = 'block';
-						}
-					});
-
-					// 							var shareContent = $('.share_card')[0]; // 需要绘制的部分的 (原生）dom 对象 ，注意容器的宽度不要使用百分比，使用固定宽度，避免缩放问题
-					// 							var width = shareContent.offsetWidth; // 获取(原生）dom 宽度
-					// 							var height = shareContent.offsetHeight; // 获取(原生）dom 高
-					// 							var offsetTop = shareContent.offsetTop; //元素距离顶部的偏移量
-					// 							var canvas = document.createElement('canvas'); //创建canvas 对象
-					// 							var context = canvas.getContext('2d');
-					// 							var scaleBy = backingScale(); //获取像素密度的方法 (也可以采用自定义缩放比例)
-					// 							canvas.width = width * scaleBy; //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
-					// 							canvas.height = (height + offsetTop) * scaleBy; // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
-					// 							context.scale(scaleBy, scaleBy);
-					// 
-					// 							var opts = {
-					// 								allowTaint: true, //允许加载跨域的图片
-					// 								tainttest: true, //检测每张图片都已经加载完成
-					// 								scale: scaleBy, // 添加的scale 参数
-					// 								canvas: canvas, //自定义 canvas
-					// 								logging: false, //日志开关，发布的时候记得改成false
-					// 								width: width, //dom 原始宽度
-					// 								height: height //dom 原始高度
-					// 							};
-					// 									html2canvas(shareContent, opts).then(function(canvas) {
-					// 										// var img = Canvas2Image.convertToImage(canvas, canvas.width, canvas.height);
-					// 										var imgurl = canvas.toDataURL();
-					// 										var $html = '<img src="' + imgurl + '" alt="" style="width:100%">'
-					// 										$('body').html($html)
-					// 									});
-
-
-				}
-				setTimeout(function() {
-					html_Canvas()
-				}, 500)
+			}
+			
+			
+			
+			
+			//延迟500ms生成图片
+			setTimeout(function() {
+				html_Canvas($('.share_card'))
+			}, 500)
 
 
 			})
