@@ -115,9 +115,6 @@ $(function() {
 		Popup.prototype = {
 			render: function(config, type) {
 				document.documentElement.style.overflow = 'hidden';
-				$('body,html').on('touchmove', function(e) {
-					e.preventDefault();
-				});
 				var CONFIG = $.extend({
 					title: '提示',
 					className: '',
