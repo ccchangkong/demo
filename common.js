@@ -59,7 +59,7 @@ window.onpageshow = function(event) {
 window.onbeforeunload = function() {
 		window.scrollTo(0, 0);
 	}
-	(function rotate() {
+	;(function rotate() {
 		var orientation = window.orientation;
 		var pd = null;
 
@@ -110,7 +110,7 @@ window.onbeforeunload = function() {
 
 
 $(function() {
-	(function() {
+	;(function() {
 		function Popup() {}
 		Popup.prototype = {
 			render: function(config, type) {
@@ -192,9 +192,6 @@ $(function() {
 
 			},
 			remove: function($el) {
-				$('body,html').off('touchmove', function(e) {
-					e.preventDefault();
-				});
 				document.documentElement.style.overflow = '';
 				$el.remove()
 			}
@@ -205,10 +202,16 @@ $(function() {
 	$('.wrapper').show();
 	var ua = window.navigator.userAgent;
 	if (ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1) {} else if (!!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-		$('textarea,input').on('blur', function() {
-			setTimeout(function() {
-				window.scrollTo(0, 0)
-			}, 100)
+		$("input,textarea").on("blur",function(){
+			setTimeout(function(){
+				window.scrollTo(0,0);
+			},100)
+		}).on('focus',function(){
+			var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+			var offsetTop = $(this).offset().top - (clientHeight / 4);
+			setTimeout(function(){
+				window.scrollTo(0,offsetTop);
+			},100)
 		})
 	}
 })
