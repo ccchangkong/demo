@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="common.css">
+		<style>
+			body {
+				font-size: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<button class="btn">111</button>
+		<canvas id="example"></canvas>
+		
+		<script crossorigin="anonymous" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+		 src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+		<script>
+			var CanvasDrawr = function(options) {
+				// 这个是设定画布信息
+
+				var canvas = document.getElementById(options.id),
+					ctx = canvas.getContext("2d");
+
+				canvas.style.width = '100%'
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight
+
+				// 设定来自options的属性
+
+				ctx.lineWidth = options.size || Math.ceil(Math.random() * 35);
+				ctx.lineCap = options.lineCap || "round";
+				ctx.pX = undefined;
+				ctx.pY = undefined;
+
+				this.test = function() {
+console.log(this.lineArr)
+				}
+				this.lineArr = [
+					[]
+				]
+				var lineCount=0
+				var _this = this
+				var offset = $(canvas).offset();
+				var lines = {};
+				var self = {
+					//初始化，绑定touchstart 和 touchmove 事件
+
+					init: function() {
+						canvas.addEventListener('touchstart', self.preDraw, false);
+						canvas.addEventListener('touchmove', self.draw, false);
+						canvas.addEventListener('touchend', self.endDraw, false);
+					},
+
+					preDraw: function(event) { //当touchstart时，获取相对canvas的x\y位置，画笔的颜色
+
+						var touch = event.touches[0]
+
+						colors = ["red", "green", "yellow", "blue", "magenta", "orangered"],
+							mycolor = colors[Math.floor(Math.random() * colors.length)];
+
+						lines= {
+							x: touch.pageX - offset.left,
+							y: touch.pageY - offset.top,
+							color: mycolor
+						};
+						event.preventDefault();
+					},
+
+					draw: function(event) { //touchmove开始划线
+						var e = event,
+							hmm = {};
+			
+						var touch = event.touches[0]
+						moveX = touch.pageX - offset.left - lines.x,
+							moveY = touch.pageY - offset.top - lines.y; //移动的x\y
+
+						var ret = self.move( moveX, moveY); //canvas的画线
+						_this.lineArr[lineCount].push({
+							x: lines.x,
+							y: lines.y,
+						})
+						lines.x = ret.x;
+						lines.y = ret.y;
+						event.preventDefault();
+					},
+
+					move: function(changeX, changeY) { //这个地方需要了解下canvas 的知识哦。
+						ctx.strokeStyle = lines.color; //设定颜色
+						ctx.beginPath(); //开始路径
+						ctx.moveTo(lines.x, lines.y); //移动到
+						ctx.lineTo(lines.x + changeX, lines.y + changeY); //画线
+						ctx.stroke(); //填充颜色
+						ctx.closePath(); //结束路径
+
+						return {
+							x: lines.x + changeX,
+							y: lines.y + changeY
+						}; //返回最后的点坐标
+					},
+					endDraw: function() {
+						_this.lineArr.push([])
+						lineCount=_this.lineArr.length-1
+					}
+				};
+
+				return self.init(); //运行init
+			};
+
+
+
+			$(function() {
+				var drawing_canvas = new CanvasDrawr({
+					id: "example",
+					size: 5,
+
+				});
+$('.btn').click(function(){
+	drawing_canvas.test()
+})
+			});
+		</script>
+	</body>
+</html>

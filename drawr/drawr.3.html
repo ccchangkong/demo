@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="common.css">
+		<style>
+			body {
+				font-size: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<button class="btn">打印数据</button>
+		<button class="btn2">重置</button>
+		<button class="btn3">json</button>
+		<canvas id="example"></canvas>
+
+		<script crossorigin="anonymous" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+		 src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+		<script>
+			var testJSON =
+				'[[{"x":165,"y":233},{"x":165,"y":232},{"x":170,"y":229},{"x":175,"y":224},{"x":185,"y":215},{"x":197,"y":206},{"x":213,"y":198},{"x":224,"y":193},{"x":240,"y":187},{"x":252,"y":184},{"x":259,"y":183},{"x":268,"y":182},{"x":273,"y":182},{"x":278,"y":182},{"x":282,"y":184},{"x":286,"y":188},{"x":288,"y":192},{"x":292,"y":201},{"x":295,"y":211},{"x":298,"y":227},{"x":299,"y":244},{"x":299,"y":257},{"x":294,"y":277},{"x":286,"y":298},{"x":278,"y":312},{"x":266,"y":331},{"x":254,"y":346},{"x":248,"y":356},{"x":239,"y":369},{"x":233,"y":380},{"x":229,"y":385},{"x":226,"y":390},{"x":225,"y":392}],[{"x":167,"y":130},{"x":168,"y":130},{"x":170,"y":131},{"x":175,"y":131},{"x":186,"y":131},{"x":204,"y":131},{"x":226,"y":131},{"x":250,"y":131},{"x":270,"y":128},{"x":281,"y":125},{"x":286,"y":124}],[]]'
+
+
+			var CanvasDrawr = function(options) {
+
+
+				var canvas = document.getElementById(options.id),
+					ctx = canvas.getContext("2d");
+				var _w = window.innerWidth;
+				var _h = window.innerHeight;
+				canvas.width = _w;
+				canvas.height = _h
+
+				// 设定来自options的属性
+
+				ctx.lineWidth = options.size || Math.ceil(Math.random() * 35);
+				ctx.lineCap = options.lineCap || "round";
+				ctx.strokeStyle = options.color || "red"
+				this.lineArr = [
+					[]
+				]
+				var lineCount = 0
+
+				var offset = $(canvas).offset();
+
+
+				this.test = function() {
+					console.log(JSON.stringify(this.lineArr))
+				}
+				this.clear = function() {
+					this.lineArr = [
+						[]
+					]
+					lineCount = 0
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					this.jsonDraw(JSON.parse(testJSON))
+				}
+				var _this = this
+
+				function init() {
+					canvas.addEventListener('touchstart', preDraw, false);
+					canvas.addEventListener('touchmove', move, false);
+					canvas.addEventListener('touchend', endDraw, false);
+				}
+
+				function preDraw(event) { //当touchstart时，获取相对canvas的x\y位置，画笔的颜色
+
+					var touch = event.touches[0]
+					var arr = _this.lineArr[lineCount]
+					// 					colors = ["red", "green", "yellow", "blue", "magenta", "orangered"],
+					// 						mycolor = colors[Math.floor(Math.random() * colors.length)];
+					// 
+					// 					lines = {
+					// 						color: mycolor
+					// 					};
+					var moveX = touch.pageX - offset.left
+					var moveY = touch.pageY - offset.top; //移动的x\y
+					if (moveX > (_w / 2)) {
+					} else {
+						moveX = _w / 2
+					}
+					arr.push({
+						x: moveX,
+						y: moveY,
+					})
+					event.preventDefault();
+				}
+
+				function move(event) { //touchmove开始划线
+					var e = event
+					var arr = _this.lineArr[lineCount]
+					var touch = event.touches[0]
+					var moveX = touch.pageX - offset.left
+					var moveY = touch.pageY - offset.top; //移动的x\y
+					if (moveX > (_w / 2)) {
+						draw(arr[arr.length - 1].x, arr[arr.length - 1].y, moveX, moveY, arr)
+						arr.push({
+							x: moveX,
+							y: moveY,
+						})
+					}
+
+					event.preventDefault();
+				}
+
+				function draw(startX, startY, changeX, changeY, arr) { //这个地方需要了解下canvas 的知识哦。
+					ctx.beginPath(); //开始路径
+					ctx.moveTo(startX, startY); //移动到
+					ctx.lineTo(changeX, changeY); //画线
+					ctx.stroke(); //填充颜色
+					ctx.closePath(); //结束路径
+				}
+
+				function endDraw() {
+					_this.lineArr.push([])
+					lineCount = _this.lineArr.length - 1
+				}
+				this.jsonDraw = function(jsons) {
+					jsons.forEach(function(el, i) {
+						el.forEach(function(_el, _i) {
+							if (_i) {
+								var $prev = el[_i - 1]
+								draw($prev.x, $prev.y, _el.x, _el.y, el)
+							}
+
+						})
+					})
+
+				}
+
+				init()
+			};
+
+
+
+			$(function() {
+				var drawing_canvas = new CanvasDrawr({
+					id: "example",
+					size: 5,
+
+				});
+				$('.btn').click(function() {
+					drawing_canvas.test()
+				})
+				$('.btn2').click(function() {
+					drawing_canvas.clear()
+				})
+				drawing_canvas.jsonDraw(JSON.parse(testJSON))
+				$('.btn3').click(function() {
+					console.log()
+					drawing_canvas.jsonDraw(JSON.parse(testJSON))
+				})
+			});
+		</script>
+	</body>
+</html>
