@@ -59,6 +59,11 @@ window.onpageshow = function(event) {
 window.onbeforeunload = function() {
 	window.scrollTo(0, 0);
 };
+function disableShare(){
+	document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+		WeixinJSBridge.call('hideOptionMenu');
+	});
+}
 (function rotate() {
 	var orientation = window.orientation;
 	var pd = null;
