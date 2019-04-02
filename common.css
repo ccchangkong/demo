@@ -48,11 +48,11 @@ a{
 	text-decoration:none;
 }
 html {
-  -ms-text-size-adjust: 100%; /* 2 */
-  -webkit-text-size-adjust: 100%; /* 2 */
-  overflow-y: scroll; /* 0 */
-  -webkit-overflow-scrolling: touch; /* 0 */
-  -webkit-tap-highlight-color: transparent;
+  -ms-text-size-adjust: 100% !important;
+  /*2*/-webkit-text-size-adjust: 100% !important;
+  /*2*/overflow-y: scroll;
+  /*0*/-webkit-overflow-scrolling: touch;
+  /*0*/-webkit-tap-highlight-color: transparent;
 }
 
 .fl{float:left;display:inline;}

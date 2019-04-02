@@ -38,21 +38,22 @@ setTimeout(() => {
 
 
 //jquery
-var d1 = function() {
+var d1 = (
+	function() {
 
-	var dtd = $.Deferred(); //在函数内部，新建一个Deferred对象
+		var dtd = $.Deferred(); //在函数内部，新建一个Deferred对象
 
-	var tasks = function() {
-		console.log("执行完毕！")
-		dtd.resolve("执行完毕！"); // 改变Deferred对象的执行状态
+		var tasks = function() {
+			console.log("执行完毕！")
+			dtd.resolve("执行完毕！"); // 改变Deferred对象的执行状态
 
-	};
+		};
 
-	setTimeout(tasks, 2000);
+		setTimeout(tasks, 2000);
 
-	return dtd.promise(); // 返回promise对象
+		return dtd.promise(); // 返回promise对象
 
-};
+	})();
 var d2 = $.Deferred();
 setTimeout(function() {
 	d2.resolve("Pizza");
